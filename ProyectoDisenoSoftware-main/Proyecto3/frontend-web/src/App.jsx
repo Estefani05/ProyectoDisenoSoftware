@@ -1,7 +1,10 @@
 import './App.css';
 import { useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import Home from './pages/Home'; // Asegúrate de tener este archivo creado
+import Home from './pages/Home'; 
+import HomeUsuario from './pages/HomeUsuario';
+import ArticulosUsuario from './pages/ArticulosUsuario';
+import Contacto from './pages/Contacto';
 
 function Login() {
   const [usuario, setUsuario] = useState('');
@@ -14,7 +17,7 @@ function Login() {
 
   const handleAceptar = () => {
     if (usuario === USUARIO_VALIDO && contrasena === CONTRASENA_VALIDA) {
-      navigate('/home');
+      navigate('/usuarioHome');
     } else {
       alert("Usuario o contraseña incorrectos");
     }
@@ -56,6 +59,9 @@ function App() {
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/home" element={<Home />} />
+      <Route path="/usuarioArticulos" element={<ArticulosUsuario />} />
+      <Route path="/usuarioHome" element={<HomeUsuario />} />
+      <Route path="/Contacto" element={<Contacto />} />
     </Routes>
   );
 }

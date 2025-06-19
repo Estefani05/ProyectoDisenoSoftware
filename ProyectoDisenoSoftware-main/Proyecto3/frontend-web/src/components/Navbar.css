@@ -1,0 +1,79 @@
+/* Navbar */
+.navbar-ccss {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 51, 102, 1);
+  z-index: 1000;
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem; 
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap; /* Permite que se ajusten si hay poco espacio */
+}
+
+.navbar-scrolled {
+  background-color: rgba(0, 51, 102, 0.85); /* Un poco transparente */
+  backdrop-filter: blur(4px); /* Efecto vidrio si lo querés más moderno */
+}
+
+.navbar-logo img {
+  height: 50px;
+}
+
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-links li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.navbar-links li a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 2px;
+  background-color: white;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.navbar-links li a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: scaleX(1);
+  text-decoration-line: underline;
+  text-decoration-style:solid;
+  text-decoration-color: lightblue;
+}
+
+.navbar-links li a.active {
+  background-color: rgba(255, 255, 255, 0.3);
+}

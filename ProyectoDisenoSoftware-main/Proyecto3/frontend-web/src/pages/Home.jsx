@@ -1,6 +1,7 @@
 import './Home.css';
 import logo from '../assets/ss.png';
 import api from '../services/api';
+import { useState, useEffect } from 'react';
 
 function Home() {
   const handleNuevoArticulo = () => {
@@ -9,7 +10,7 @@ function Home() {
 
   const [articulos, setArticulos] = useState([]);
 
-  useEffect(() => {
+  useEffect(() => { 
     api.get('/articulos') // asumiendo que el endpoint sea /api/articulos
       .then((res) => setArticulos(res.data))
       .catch((err) => console.error('Error al cargar artículos:', err));

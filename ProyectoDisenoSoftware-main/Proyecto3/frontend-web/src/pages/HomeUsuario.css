@@ -1,0 +1,170 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  
+  
+}
+
+html, body{
+  width: 100%;
+  overflow-x: hidden;
+
+
+}
+
+#root {
+  padding: 0;
+  margin: 0;
+}
+/*
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}*/
+
+.inicio-container{
+   width: 100vw;
+  position: relative;
+
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+}
+
+
+
+
+/*Contenedor de texto*/
+
+.bienvenida-container {
+  max-width: 600px;
+  background-color: rgba(255 255 255 / 0.15);
+  padding: 2rem 2.5rem;
+  border-radius: 15px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  animation: fadeInUp 1s ease forwards;
+}
+
+.bienvenida-container h2 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.linea-decorativa {
+  width: 80px;
+  height: 4px;
+  background: #fff;
+  margin: 0 auto 1.5rem auto;
+  border-radius: 2px;
+}
+
+.bienvenida-container p {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+/* Animación */
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/*Card de articulos----------------------*/
+
+.accesos-rapidos {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem;
+  flex-wrap: wrap;
+}
+
+.accesos-rapidos p{
+  margin-bottom: 0.5rem;
+  color: #3e464d;
+}
+
+.acceso {
+  background-color: #e6f0ff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+  width: 250px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.acceso:hover {
+  transform: scale(1.05);
+}
+
+.acceso-disabled {
+  background-color: #f5f5f5;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+.icono {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.acceso h4 {
+  color: #003366;
+  margin: 0.5rem 0;
+}
+
+
+/* Main */
+.inicio-main {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1rem;
+  background: linear-gradient(135deg, #1161c2ad, #1c86a3);
+  color: white;
+  text-align: center;
+}
+
+.inicio-botonera {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.inicio-botonera button {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  background-color: #0059b3;
+  color: white;
+  cursor: pointer;
+}
+
+.inicio-botonera button:hover {
+  background-color: #0077e6;
+}
+
+.inicio-botonera button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+

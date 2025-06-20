@@ -1,7 +1,7 @@
 import './ArticulosUsuario.css';
 import Navbar from '../components/Navbar';
 import { useState, useEffect } from 'react';
-import api from '../services/api';
+import backendFacade from '../services/backendFacade';
 
 function ArticulosUsuario() {
   const [articulos, setArticulos] = useState([]);
@@ -10,7 +10,7 @@ function ArticulosUsuario() {
   const [ordenFechaReciente, setOrdenFechaReciente] = useState(true);
 
   useEffect(() => {
-    api.get('/articulos/listar')
+    backendFacade.obtenerArticulos()
       .then(res => setArticulos(res.data))
       .catch(err => console.error('Error al cargar artículos:', err));
   }, []);

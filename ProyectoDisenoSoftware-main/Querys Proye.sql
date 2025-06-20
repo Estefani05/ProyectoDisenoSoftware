@@ -1,7 +1,9 @@
 -- CREATE DATABASE RIPSSHA;
+-- DROP DATABASE RIPSSHA;
 
 USE RIPSSHA;
-    
+-------------------------------------------------- TABLAS ----------------------------------------------    
+-- Tabla de roles
 CREATE TABLE Roles (
   id INT PRIMARY KEY IDENTITY,
   nombre VARCHAR(50) NOT NULL UNIQUE -- Ej: 'admin', 'lector'
@@ -16,10 +18,6 @@ CREATE TABLE Usuarios (
   rol_id INT NOT NULL,
   FOREIGN KEY (rol_id) REFERENCES Roles(id)
 );
-
--- Los roles del sistema hasta el momento
-INSERT INTO Roles (nombre) VALUES ('admin');
-INSERT INTO Roles (nombre) VALUES ('lector');
 
 -- Tabla de articulos
 CREATE TABLE Articulos (
@@ -40,17 +38,79 @@ CREATE TABLE Alertas (
   fecha DATETIME DEFAULT GETDATE()
 );
 
--- Stored Procedures	
+-- Tabla con logs de los usuarios
+CREATE TABLE AuditLogs (
+  id INT IDENTITY PRIMARY KEY,
+  accion NVARCHAR(255),
+  usuarioId INT NULL,
+  fecha DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE Slides (
+  id INT IDENTITY(1,1) PRIMARY KEY,
+  titulo NVARCHAR(255) NOT NULL,
+  descripcion NVARCHAR(1000),
+  ruta_imagen NVARCHAR(500),
+  fecha_creacion DATETIME DEFAULT GETDATE()
+);
+-------------------------------------------------- ROLES -----------------------------------------------
+
+-- Los roles del sistema hasta el momento
+INSERT INTO Roles (nombre) VALUES ('admin');
+INSERT INTO Roles (nombre) VALUES ('lector');
+
+-------------------------------------------------- USUARIOS -----------------------------------------------
+
+-- Login Usuario
 GO
+CREATE PROCEDURE sp_Login
+  @correo NVARCHAR(100),
+  @contrasena NVARCHAR(100)
+AS
+BEGIN
+  SELECT Id, nombre_usuario FROM Usuarios
+  WHERE Correo = @correo AND contraseña_hash = @contrasena;
+END
+GO
+
+-- Ejemplo de usuario base
+
+INSERT INTO Usuarios (nombre_usuario, correo, contraseña_hash, rol_id)
+VALUES (
+  'Keingell',
+  'keingell@example.com',
+  'contra123', 
+  1                             
+);
+GO
+
+-------------------------------------------------- LOGS -----------------------------------------------
+
+-- Insertar un log
+CREATE PROCEDURE sp_InsertarAuditLog
+  @accion NVARCHAR(255),
+  @usuarioId INT = NULL
+AS
+BEGIN
+  INSERT INTO AuditLogs (accion, usuarioId, fecha)
+  VALUES (@accion, @usuarioId, GETDATE());
+END
+GO
+
+-------------------------------------------------- ARTICULOS -----------------------------------------------
+
+-- Obtener articulos un articulo
+
+
 CREATE PROCEDURE sp_ObtenerArticulos
 AS
 BEGIN
-  SELECT id, titulo, descripcion, archivo_url, fecha_modificacion
-  FROM Articulos
-  ORDER BY fecha_modificacion DESC;
+    SELECT id, titulo, descripcion, archivo_url, fecha_creacion, fecha_modificacion, creado_por FROM Articulos;
 END
-
 GO
+
+-- Crear un articulo
+
 CREATE PROCEDURE sp_CrearArticulo
   @titulo VARCHAR(255),
   @descripcion TEXT,
@@ -61,51 +121,92 @@ BEGIN
   INSERT INTO Articulos (titulo, descripcion, archivo_url, creado_por)
   VALUES (@titulo, @descripcion, @archivo_url, @creado_por);
 END
-
 GO
-CREATE PROCEDURE sp_EditarArticulo
+
+-- Actualizar un articulo
+
+CREATE PROCEDURE sp_ActualizarArticulo
   @id INT,
-  @titulo VARCHAR(255),
-  @descripcion TEXT,
-  @archivo_url VARCHAR(500)
+  @titulo NVARCHAR(255),
+  @descripcion NVARCHAR(1000),
+  @archivo_url NVARCHAR(500) = NULL
 AS
 BEGIN
+  SET NOCOUNT ON;
+
   UPDATE Articulos
-  SET titulo = @titulo,
-      descripcion = @descripcion,
-      archivo_url = @archivo_url,
-      fecha_modificacion = GETDATE()
+  SET
+    titulo = @titulo,
+    descripcion = @descripcion,
+    archivo_url = ISNULL(@archivo_url, archivo_url), -- mantiene la actual si es NULL
+    fecha_modificacion = GETDATE()
   WHERE id = @id;
 END
-
 GO
-CREATE PROCEDURE sp_LoginUsuario
-  @correo VARCHAR(100)
+
+-- Eliminar un articulo
+
+
+CREATE PROCEDURE sp_EliminarArticulo
+  @id INT
 AS
 BEGIN
-  SELECT id, nombre_usuario, correo, contraseña_hash, rol_id
-  FROM Usuarios
-  WHERE correo = @correo;
+  SET NOCOUNT ON;
+
+  DELETE FROM Articulos
+  WHERE id = @id;
 END
+GO
 
---ALTER LOGIN sa WITH PASSWORD = 'Contra123';
---ALTER LOGIN sa ENABLE;
+-------------------------------------------------- SLIDES Y CARRUSEL -----------------------------------------------
 
-CREATE PROCEDURE sp_Login
-  @correo NVARCHAR(100),
-  @contrasena NVARCHAR(100)
+-- Obtener Slides
+CREATE PROCEDURE sp_SlidesCarrusel
 AS
 BEGIN
-  SELECT Id, Nombre FROM Usuarios
-  WHERE Correo = @correo AND Contrasena = @contrasena;
+    SELECT id, titulo, descripcion, ruta_imagen, fecha_creacion
+    FROM Slides
+    ORDER BY fecha_creacion DESC;
 END
+GO
 
-INSERT INTO Usuarios (nombre_usuario, correo, contraseña_hash, rol_id)
-VALUES (
-  'Keingell',
-  'keingell@example.com',
-  'contra123', 
-  1                             
-);
 
-SELECT * FROM Usuarios;
+-- Agregar slide
+CREATE PROCEDURE sp_InsertarSlide
+  @titulo NVARCHAR(255),
+  @descripcion NVARCHAR(1000),
+  @ruta_imagen NVARCHAR(500)
+AS
+BEGIN
+  SET NOCOUNT ON;
+
+  INSERT INTO Slides (titulo, descripcion, ruta_imagen)
+  VALUES (@titulo, @descripcion, @ruta_imagen);
+END;
+GO
+
+
+-- Actualizar slide
+CREATE OR ALTER PROCEDURE sp_Slides_Actualizar
+    @id INT,
+    @titulo NVARCHAR(255),
+    @descripcion NVARCHAR(1000),
+    @ruta_imagen NVARCHAR(500)
+AS
+BEGIN
+    UPDATE Slides
+    SET titulo = @titulo,
+        descripcion = @descripcion,
+        ruta_imagen = @ruta_imagen
+    WHERE id = @id;
+END
+GO
+
+-- Eliminar slide
+CREATE OR ALTER PROCEDURE sp_Slides_Eliminar
+    @id INT
+AS
+BEGIN
+    DELETE FROM Slides WHERE id = @id;
+END
+GO

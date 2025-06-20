@@ -1,5 +1,6 @@
-// services/usuarioService.js
 const { poolPromise } = require('../db/conection');
+const { withLoginLogging } = require('../decorators/loginLogger'); 
+const { insertarLog } = require('./logModel'); 
 
 async function registrarUsuario(nombre, correo, passwordHash, rol) {
   try {
@@ -18,14 +19,32 @@ async function registrarUsuario(nombre, correo, passwordHash, rol) {
   }
 }
 
-async function obtenerUsuario(correo, contrasena) {
+async function obtenerUsuarioBase(correo, contrasena) {
   const pool = await poolPromise;
   const result = await pool.request()
     .input('correo', correo)
-   // .input('contrasena', sql.NVarChar, contrasena)
-    .execute('sp_LoginUsuario');
-  return result.recordset;
+    .input('contrasena', contrasena)
+    .execute('sp_Login');
+
+  console.log('Resultado de obtenerUsuarioBase:', result);
+  const usuario = result.recordset[0];
+
+  if (!usuario) {
+    return { success: false };
+  }
+
+  return {
+    success: true,
+    usuario: {
+      id: usuario.Id,
+      nombre: usuario.nombre_usuario,
+    }
+  };
 }
+
+const obtenerUsuario = withLoginLogging(obtenerUsuarioBase, async (usuario) => {
+  await insertarLog('Acceso al sistema (Login)', usuario.id);
+});
 
 async function listarUsuarios() {
   const pool = await poolPromise;
@@ -35,6 +54,6 @@ async function listarUsuarios() {
 
 module.exports = {
   registrarUsuario,
-  obtenerUsuario,
+  obtenerUsuario, 
   listarUsuarios
 };

@@ -1,0 +1,52 @@
+.admin-menu-container {
+  max-width: 500px;
+  margin: 4rem auto;
+  padding: 2rem;
+  background: #f5f8fa;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+.admin-menu-container h1 {
+  color: #003366;
+  margin-bottom: 2rem;
+}
+
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.menu-buttons button {
+  background-color: #0072c6;
+  color: white;
+  border: none;
+  padding: 1rem;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.menu-buttons button:hover {
+    transition: color 0.5s;
+  color: #0072c6;
+}
+
+.btn-volver {
+  background: none;
+  border: none;
+  color: #0072c6;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  padding: 0;
+
+  transition: color 0.3s;
+}
+
+.btn-volver:hover {
+  color: #005fa3;
+}

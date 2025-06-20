@@ -20,9 +20,9 @@ async function registrar(req, res) {
 async function login(req, res) {
     const { correo, contrasena } = req.body;
     try {
-      const usuarios = await obtenerUsuario(correo, contrasena);
-      if (usuarios.length > 0) {
-        res.json({ success: true, usuario: usuarios[0] });
+      const resultado = await obtenerUsuario(correo, contrasena);
+      if (resultado.success) {
+        res.json({ success: true, usuario: resultado.usuario });
       } else {
         res.status(401).json({ success: false, mensaje: 'Credenciales inválidas' });
       }

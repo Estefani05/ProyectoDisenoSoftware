@@ -11,6 +11,7 @@ app.use(express.json());
 // Rutas
 const usuarioRoutes = require('./routes/userRoutes');
 const articuloRoutes = require('./routes/articuloRoutes');
+const carruselRoutes = require('./routes/carruselRoutes');
 
 //Poner publicos los archivos de uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -18,6 +19,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 //Usar rutas
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/articulos', articuloRoutes);
+app.use('/api/carrusel', carruselRoutes);
 
 // Servidor
 const PORT = process.env.PORT || 3001;

@@ -1,19 +1,21 @@
-const { registrarUsuario,obtenerUsuario,listarUsuarios } = require('../models/userModel');
+const { registrarUsuario,obtenerUsuario,listarUsuarios, editarUsuario, eliminarUsuario } = require('../models/userModel');
 
 async function registrar(req, res) {
   //Validación básica 
-  const { nombre, correo, contraseña, rol } = req.body;
-  if (!nombre || !correo || !contraseña) {
+  const { nombre_usuario, correo, contraseña_hash } = req.body;
+  console.log('Datos recibidos:', req.body);
+  if (!nombre_usuario || !correo || !contraseña_hash) {
     return res.status(400).json({ error: 'Faltan campos obligatorios' });
   }
 
 
   try {
-    await registrarUsuario(nombre, correo, hash, rol); 
+    await registrarUsuario(nombre_usuario, correo, contraseña_hash); 
     res.status(201).json({ mensaje: 'Usuario registrado exitosamente' });
   } catch (error) {
     res.status(500).json({ error: 'Error en el registro' });
   }
+ res.status(200).json({ mensaje: 'prueba' });
 }
 
 
@@ -42,4 +44,29 @@ async function listar(req, res) {
     }
 }
 
-module.exports = { registrar , login, listar};
+async function editar (req, res) {
+    const {correoAnterior} = req.params;
+    const { nombre_usuario, correo, contraseña_hash } = req.body;
+
+    try {
+      const usuarios = await editarUsuario(nombre_usuario, correo, contraseña_hash, correoAnterior);
+      res.json(usuarios);
+    } catch (err) {
+      console.error('Error al editar usuarios:', err);
+      res.status(500).send('Error del servidor');
+    }
+}
+
+async function eliminar (req, res) {
+    const {correo} = req.params;
+
+    try {
+      const usuarios = await eliminarUsuario(correo);
+      res.json(usuarios);
+    } catch (err) {
+      console.error('Error al eliminar usuarios:', err);
+      res.status(500).send('Error del servidor');
+    }
+}
+
+module.exports = { registrar , login, listar, registrarUsuario, obtenerUsuario, listarUsuarios, editar, eliminar};

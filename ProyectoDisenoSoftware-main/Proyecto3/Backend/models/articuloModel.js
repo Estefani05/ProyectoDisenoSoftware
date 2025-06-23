@@ -14,7 +14,7 @@ async function insertarArticulo(titulo, descripcion, ruta, creado_por) {
     .execute('sp_CrearArticulo');
 }
 
-async function listarArticulosBase() {
+async function listarArticulos() {
   const pool = await poolPromise;
   const result = await pool.request()
     .execute('sp_ObtenerArticulos');
@@ -45,6 +45,7 @@ async function borrarArticulo(id) {
 
 // Exportamos
 module.exports = {
+  listarArticulos,
   insertarArticulo,
   actualizarArticulo,
   borrarArticulo

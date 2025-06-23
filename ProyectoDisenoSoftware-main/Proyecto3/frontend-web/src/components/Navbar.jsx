@@ -24,7 +24,6 @@ function Navbar() {
         <ul className="navbar-links">
           <li><Link to="/usuarioHome">Inicio</Link></li>
           <li><Link to="/usuarioArticulos">Artículos</Link></li>
-          <li><a href="#">Noticias</a></li>
           <li><Link to="/Contacto">Contacto</Link></li>
         </ul>
       </div>

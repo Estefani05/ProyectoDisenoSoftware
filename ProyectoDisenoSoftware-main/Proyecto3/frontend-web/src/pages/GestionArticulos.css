@@ -1,3 +1,4 @@
+
 .gestion-articulos {
   max-width: 1000px;
   margin: 2rem auto;
@@ -6,6 +7,7 @@
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   font-family: Arial, sans-serif;
+  
 }
 
 .gestion-articulos h2,
@@ -39,12 +41,6 @@
 .form-articulo textarea {
   resize: none;
   height: 120px;
-}
-
-.botones-formulario {
-  display: flex;
-  gap: 1rem;
-  justify-content: flex-end;
 }
 
 .form-articulo button {
@@ -147,4 +143,32 @@
 
 .tabla-articulos a:hover {
   text-decoration: underline;
+}
+
+.botones-formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.botones-formulario button {
+  padding: 0.7rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.botones-formulario button[type="submit"] {
+  background-color: #0072c6;
+  color: white;
+}
+
+.botones-formulario button[type="submit"]:hover {
+  background-color: #005fa3;
+}
+
+.botones-formulario button[type="button"] {
+  background-color: #ccc;
 }

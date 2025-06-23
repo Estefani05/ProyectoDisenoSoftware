@@ -9,6 +9,7 @@ function GestionArticulos() {
   const [previewNombreArchivo, setPreviewNombreArchivo] = useState('');
   const [modoEdicion, setModoEdicion] = useState(false);
   const navigate = useNavigate();
+  const rolId = localStorage.getItem('rol_id');
 
   useEffect(() => {
     cargarArticulos();
@@ -117,7 +118,7 @@ function GestionArticulos() {
         <div className="botones-formulario">
           <div style={{ display: 'flex', gap: '1rem' ,justifyContent: 'flex-end'}}>
             <button type="submit">{modoEdicion ? 'Actualizar' : 'Crear'}</button>
-            <button type="button" onClick={() => navigate('/home')}>Volver</button>
+            <button type="button" onClick={() => navigate(`/home/${rolId}`)}>Volver</button>
           </div>
           {modoEdicion && (
             <button

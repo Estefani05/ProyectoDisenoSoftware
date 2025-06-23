@@ -9,6 +9,7 @@ function GestionSlides() {
   const [form, setForm] = useState(clonarFormulario(slidePrototype));
   const [preview, setPreview] = useState(null);
   const navigate = useNavigate();
+  const rolId = localStorage.getItem('rol_id');
 
   useEffect(() => {
     cargarSlides();
@@ -71,9 +72,11 @@ function GestionSlides() {
         <textarea name="descripcion" placeholder="Descripción" value={form.descripcion} onChange={handleChange} required></textarea>
         <input type="file" name="imagen" accept="image/*" onChange={handleChange} required />
         {preview && <img src={preview} alt="Vista previa" className="preview" />}
+        <div className="botones-formulario">
         <div style={{ display: 'flex', gap: '1rem' ,justifyContent: 'flex-end'}}>
           <button type="submit">Subir Slide</button>
-          <button type="button" onClick={() => navigate('/home')}>Volver</button>
+          <button type="button" onClick={() => navigate(`/home/${rolId}`)}>Volver</button>
+        </div>
         </div>
       </form>
 

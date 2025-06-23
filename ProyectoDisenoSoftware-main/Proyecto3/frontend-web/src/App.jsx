@@ -10,6 +10,7 @@ import GestionArticulos from './pages/GestionArticulos';
 import backendFacade from './services/backendFacade';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import GestionAdministradores from './pages/GestionAdministradores';
 
 function Login() {
   const [usuario, setUsuario] = useState('');
@@ -17,7 +18,7 @@ function Login() {
   const [errorMensaje, setErrorMensaje] = useState('');
   const navigate = useNavigate();
 
-  // ✅ Credenciales fijas
+  //  Credenciales fijas
   const USUARIO_VALIDO = "admin";
   const CONTRASENA_VALIDA = "1234";
 
@@ -31,8 +32,14 @@ function Login() {
     try{
         const response = await backendFacade.loginUsuario(loginINFO)
         const data = response.data
+        console.log('Respuesta del servidor:', data);
         if (data.success === true) {
-          navigate('/home');
+          const rolId = data.usuario.rol_id;
+
+          console.log("TIPO ROL", rolId);
+          localStorage.setItem('rol_id', rolId);
+          navigate(`/home/${(data.usuario.rol_id).toString()}`);
+
         } else {
           toast.error('Usuario o contraseña incorrectos.');
         }
@@ -53,25 +60,29 @@ function Login() {
       <form className="login-box" onSubmit={(e) => { e.preventDefault(); handleAceptar(); }}>
         <h2>Iniciar Sesión</h2>
 
-        <label htmlFor="usuario" className="input-label">Usuario</label>
-        <input
-          id="usuario"
-          type="text"
-          value={usuario}
-          onChange={(e) => setUsuario(e.target.value)}
-          placeholder="Ingrese su usuario"
-          required
-        />
+        <div className="input-group">
+          <input
+            id="usuario"
+            type="text"
+            value={usuario}
+            onChange={(e) => setUsuario(e.target.value)}
+            placeholder=" "
+            required
+          />
+          <label htmlFor="usuario">Usuario</label>
+        </div>
 
-        <label htmlFor="contrasena" className="input-label">Contraseña</label>
-        <input
-          id="contrasena"
-          type="password"
-          value={contrasena}
-          onChange={(e) => setContrasena(e.target.value)}
-          placeholder="Ingrese su contraseña"
-          required
-        />
+        <div className="input-group">
+          <input
+            id="contrasena"
+            type="password"
+            value={contrasena}
+            onChange={(e) => setContrasena(e.target.value)}
+            placeholder=" "
+            required
+          />
+          <label htmlFor="contrasena">Contraseña</label>
+        </div>
 
         <div className="button-group">
           <button type="submit" className="btn-primary">Aceptar</button>
@@ -87,12 +98,13 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
-      <Route path="/home" element={<Home />} />
+      <Route path="/home/:rol_id" element={<Home />} />
       <Route path="/usuarioArticulos" element={<ArticulosUsuario />} />
       <Route path="/usuarioHome" element={<HomeUsuario />} />
       <Route path="/Contacto" element={<Contacto />} />
       <Route path="/admin/carrusel" element={<GestionSlides />} />
       <Route path="/admin/articulos" element={<GestionArticulos />} />
+      <Route path="/admin/administradores" element={<GestionAdministradores />} />
     </Routes>
   );
 }

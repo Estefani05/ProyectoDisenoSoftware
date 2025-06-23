@@ -1,20 +1,20 @@
-import api from './api';
+import backendRESTAdapter from '../adapters/backendRESTAdapter';
 
 const backendFacade = {
+  loginUsuario: backendRESTAdapter.loginUsuario,
+  obtenerAdministradores: backendRESTAdapter.obtenerAdministradores,
+  crearAdministrador: backendRESTAdapter.crearAdministrador,
+  editarAdministrador: backendRESTAdapter.editarAdministrador,
+  eliminarAdministrador: backendRESTAdapter.eliminarAdministrador,
 
-  /*-------------- Usuarios ------------------*/ 
-  loginUsuario: (data) => api.post('/usuarios/login', data),
+  obtenerArticulos: backendRESTAdapter.obtenerArticulos,
+  crearArticulo: backendRESTAdapter.crearArticulo,
+  editarArticulo: backendRESTAdapter.editarArticulo,
+  eliminarArticulo: backendRESTAdapter.eliminarArticulo,
 
-  /*-------------- Articulos ------------------*/ 
-  obtenerArticulos: () => api.get('/articulos/listar'),
-  crearArticulo: (data) => api.post('/articulos/subir', data),
-  editarArticulo: (id, data) => api.put(`/articulos/editar/${id}`,data),
-  eliminarArticulo: (id) => api.delete(`/articulos/eliminar/${id}`),
-
-  /*-------------- Carrusel ------------------*/ 
-  obtenerSlides: () => api.get('/carrusel'),
-  crearSlide: (data) => api.post('/carrusel', data),
-  eliminarSlide: (id) => api.delete(`/carrusel/${id}`),
+  obtenerSlides: backendRESTAdapter.obtenerSlides,
+  crearSlide: backendRESTAdapter.crearSlide,
+  eliminarSlide: backendRESTAdapter.eliminarSlide
 };
 
 export default backendFacade;
